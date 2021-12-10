@@ -133,6 +133,16 @@ This templates requires XeLatex or LuaLatex for compilation.
 ```
 ### Commands and Environments 
 
+- You can use `\the` command to reference the supervisor or co-supervisor.
+
+```latex
+
+    \the\supervisor{} % The Supervisor Name
+
+    \the\cosupervisor{}  % The Co-Supervisor Name
+
+```
+
 - You can use the following commands to add sections and sub sections etc.
 
 ```latex
