@@ -50,6 +50,7 @@ This templates requires XeLatex or LuaLatex for compilation.
 ```latex
 
 \begin{document}
+
     \makecover
 
     \maketitle
@@ -238,3 +239,12 @@ For example :
     (see Table or Figure \ref{tbl:nameforrefs})
 
 ```
+
+## Author 
+
+Ayman Elfaki
+
+## Copyright
+
+This project is under the GPL-3.0 License.
+
