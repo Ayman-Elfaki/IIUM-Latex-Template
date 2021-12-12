@@ -10,21 +10,23 @@
 % OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 % PERFORMANCE OF THIS SOFTWARE.
 
+
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{iium}[2021/11/09 IIUM Thesis Template]
 
 
-
+% report
 \LoadClass[12pt]{report}
 
 \RequirePackage[a4paper,margin=2.5cm,left=3.8cm,bottom=3cm,footskip=1.7cm]{geometry}
 \RequirePackage{enumerate,setspace,ragged2e,array,tabularx,float}
-\RequirePackage{titlesec,tocloft,scrextend,xfp}
+\RequirePackage{titlesec,scrextend,xfp}
+\RequirePackage{tocloft}
 \RequirePackage{fmtcount,etoolbox,graphicx}
 \RequirePackage[none]{hyphenat}
 \RequirePackage[notocbib]{apacite}
 
-\RequirePackage[xindy,toc,section=part]{glossaries}
+\RequirePackage[nopostdot,nogroupskip,style=super,nonumberlist,toc,section=part]{glossaries}
 \RequirePackage[printonlyused]{acronym}
 
 \makeglossaries
@@ -362,7 +364,6 @@
 
 \newenvironment{Chapter}[1]
 {
-	\label{#1}
 	\refstepcounter{chpatersCounters}
 	\addcontentsline{toc}{chapter}{Chapter \thechpatersCounters{}: #1}
 	\chapter*{\uppercase{Chapter \thechpatersCounters{} \\[\spaceof{0.35}] #1}}
@@ -371,6 +372,12 @@
     \setcounter{subsection}{0}
     \setcounter{subsubsection}{0}
     \setcounter{paragraph}{0}
+    \renewcommand\thefigure{\thechapter.\arabic{figure}} 
+    \setcounter{figure}{0}
+    
+    \renewcommand\thetable{\thechapter.\arabic{table}} 
+    \setcounter{table}{0}
+    
 	\begin{justify}
 		\normalsize
 		\noindent
@@ -405,20 +412,20 @@
 
 \newcommand{\makelistoftables}{
 	\addcontentsline{toc}{part}{List of Tables}
-	\listoftables
+	{\renewcommand{\addvspace}[1]{} \onehalfspacing \listoftables}
 	\clearpage
 }
 
 \newcommand{\makelistoffigures}{
 	\addcontentsline{toc}{part}{List of Figures}
-	\listoffigures
+	{\renewcommand{\addvspace}[1]{} \onehalfspacing \listoffigures}
 	\clearpage
 }
 
 
 \newcommand{\makelistofabbreviations}{
-   
-    \printglossary[nonumberlist, type=\acronymtype, title=\MakeUppercase{List of Abbreviations}, toctitle=List of Abbreviations]
+    \onehalfspacing
+    \printglossary[type=\acronymtype, title=\MakeUppercase{List of Abbreviations}, toctitle=List of Abbreviations]
 }
 
 
@@ -676,6 +683,7 @@
 
 
 \newcommand{\makereferences}[1]{
+    \label{pg:ReferencesPage}
 	\addcontentsline{toc}{chapter}{References}
 	\clearpage
 	\bibliographystyle{apacite}
