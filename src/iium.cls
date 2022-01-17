@@ -26,8 +26,28 @@
 \RequirePackage[none]{hyphenat}
 \RequirePackage[notocbib]{apacite}
 
+
 \RequirePackage[nopostdot,nogroupskip,style=super,nonumberlist,toc,section=part]{glossaries}
+
 \RequirePackage[printonlyused]{acronym}
+
+%Generate a list of symbols
+\newglossary[slg]{symbols}{syi}{syg}{List of Symbols}
+
+\setlength\LTleft{0pt}
+\setlength\LTright{0pt}
+\setlength{\glsdescwidth}{0.8\textwidth}
+
+
+% ADD THE FOLLOWING COUPLE LINES INTO YOUR PREAMBLE
+\let\OLDthebibliography\thebibliography
+\renewcommand\thebibliography[1]{
+  \OLDthebibliography{#1}
+  \setlength{\parskip}{\spaceof{1}}
+  \setlength{\itemsep}{0pt plus 0.3ex}
+}
+
+
 
 \makeglossaries
 
@@ -178,7 +198,7 @@
 		\the\faculty \\
 		\the\institution\\
 		\vfill
-		\the\month\hspace{0.5mm} -\hspace{0.5mm} \the\year\\
+		\MONTH\hspace{0.5mm} -\hspace{0.5mm} \the\year\\
 		\vspace*{3cm}
 	\end{center}
 	\pagenumbering{gobble}
@@ -203,7 +223,21 @@
 	}
 }
 
-
+\newcommand{\MONTH}{%
+  \ifcase\the\month
+  \or January% 1
+  \or February% 2
+  \or March% 3
+  \or April% 4
+  \or May% 5
+  \or June% 6
+  \or July% 7
+  \or August% 8
+  \or September% 9
+  \or October% 10
+  \or November% 11
+  \or December% 12
+  \fi}
 
 \renewcommand\cftdotsep{1}
 
@@ -426,13 +460,18 @@
 \newcommand{\makelistofabbreviations}{
     \onehalfspacing
     \printglossary[type=\acronymtype, title=\MakeUppercase{List of Abbreviations}, toctitle=List of Abbreviations]
+    \clearpage
 }
 
+\newcommand{\makelistofsymbols}{
+    \onehalfspacing
+    \printglossary[type=symbols, title=\MakeUppercase{List of Symbols}, toctitle=List of Symbols]
+    \clearpage
+}
 
 \newcommand{\makeapproval}
 {
 	\addcontentsline{toc}{part}{Approval Page}
-
 	\part*{Approval Page}
 	\begin{justify}
 		\begin{fixMargin}{1pt}
@@ -523,13 +562,11 @@
 \newcommand{\makedeclaration}
 {
 	\addcontentsline{toc}{part}{Declaration}
-
 	\part*{Declaration}
-	\begin{fixMargin}{2pt}
-
+	\begin{fixMargin}{1pt}
 		\justifying
 		\normalsize
-		\setstretch{1}
+		\setstretch{2}
 		\noindent
 		I hereby declare that this \the\reporttype{} is the result of my own investigations, except
 		where otherwise stated. I also declare that it has not been previously or concurrently
@@ -538,15 +575,13 @@
 		\begin{justify}
 			\noindent
 			\begin{tabular}{@{}p{2.8in}p{2.7in}@{}}
+			                       &               \\
 				\@author           &               \\
-				                   &               \\
 				                   &               \\
 				Signature \dotfill & Date \dotfill \\
 			\end{tabular}
 		\end{justify}
-
 	\end{fixMargin}
-
 	\clearpage
 }
 
@@ -562,6 +597,63 @@
 	\end{center}
 }
 
+\newcommand{\makeiiumcopyrightpage}
+{
+	\addcontentsline{toc}{part}{Copyright Page}
+	\begin{Framed}
+		\begin{center}
+			\large\MakeUppercase{\textbf{\the\institution}}\\[24pt]
+			\large\MakeUppercase{\textbf{Declaration of copyright and affirmation of Fair
+					use of unpublished research}}\\[24pt]
+			\large\MakeUppercase{\textbf{\@title{}}}\\[24pt]
+			
+			\normalsize
+			I declare that the copyright holder of this \the\reporttype{} are jointly owned by
+			the student and IIUM.\\
+			\vspace{\spaceof{1.5}}
+			\footnotesize
+			Copyright © \the\year{} \@author{} and International Islamic University Malaysia.
+			All rights reserved.
+           
+			\vspace{\spaceof{1.5}}
+			\normalsize
+			\begin{flushleft}
+				No part of this unpublished research may be reproduced, stored in a retrieval
+				system, or transmitted, in any form or by any means, electronic, mechanical,
+				photocopying, recording or otherwise without prior written permission of the
+				copyright holder except as provided below\\[21.5pt]
+				
+				\begin{enumerate}[\hspace{1.2cm}1.]
+					\item Any material contained in or derived from this unpublished research
+					      may only be used by others in their writing with due acknowledgement.\\[12pt]
+					\item IIUM or its library will have the right to make and transmit copies
+					      (print or electronic) for institutional and academic purpose.\\[12pt]
+					\item The IIUM library will have the right to make, store in a retrieval system
+					      and supply copies of this unpublished research if requested by other
+					      universities and research libraries.\\
+				\end{enumerate}
+				\vspace{\spaceof{1.5}}
+				By signing this form, I acknowledged that I have read and understand the
+				IIUM Intellectual Property Right and Commercialization policy.\\
+			    \vspace{\spaceof{2}}
+				Affirmed by \@author
+			\end{flushleft}
+			
+			\vspace{\spaceof{2}}
+            
+			\begin{center}
+				\begin{tabularx}{0.9\textwidth} {
+						>{\centering\arraybackslash}X
+						>{\centering\arraybackslash}X}
+					\dotfill  & \dotfill \\
+					Signature & Date     \\
+				\end{tabularx}
+			\end{center}
+		\end{center}
+	\end{Framed}
+	\clearpage
+}
+
 \newcommand{\makejointcopyright}
 {
 	\addcontentsline{toc}{part}{Joint Copyright}
@@ -575,18 +667,18 @@
 			\normalsize
 			I declare that the copyright holder of this \the\reporttype{} are jointly owned by
 			the student and IIUM.\\
-			\vspace*{24pt}
+			\vspace{\spaceof{2}}
 			\footnotesize
 			Copyright © \the\year{} \@author{} and International Islamic University Malaysia.
 			All rights reserved.
            
-			\vspace*{24pt}
+			\vspace{\spaceof{2}}
 			\normalsize
 			\begin{flushleft}
 				No part of this unpublished research may be reproduced, stored in a retrieval
 				system, or transmitted, in any form or by any means, electronic, mechanical,
 				photocopying, recording or otherwise without prior written permission of the
-				copyright holder except as provided below\\[24pt]
+				copyright holder except as provided below\\[21.5pt]
 				
 				\begin{enumerate}[\hspace{1.2cm}1.]
 					\item Any material contained in or derived from this unpublished research
@@ -597,9 +689,10 @@
 					      and supply copies of this unpublished research if requested by other
 					      universities and research libraries.\\
 				\end{enumerate}
+				\vspace{\spaceof{1.5}}
 				By signing this form, I acknowledged that I have read and understand the
 				IIUM Intellectual Property Right and Commercialization policy.\\
-				\vspace*{\spaceof{4}}
+			    \vspace{\spaceof{3}}
 				Affirmed by \@author
 			\end{flushleft}
 			
@@ -614,9 +707,7 @@
 				\end{tabularx}
 			\end{center}
 		\end{center}
-	\end{Framed}
-
-	\clearpage
+    \clearpage
 }
 
 
@@ -636,9 +727,9 @@
 			I declare that the copyright holder of this \the\reporttype{} is
 			\@author\\
 
-			\vspace*{24pt}
+			\vspace{\spaceof{2}}
 			\footnotesize
-			Copyright © \the\year{} \@author{}. All rights reserved.\\[24pt]
+			Copyright © \the\year{} \@author{}. All rights reserved.\\[20.5pt]
 
 			\normalsize
 			\begin{flushleft}
@@ -655,9 +746,10 @@
 					      and supply copies of this unpublished research if requested by other
 					      universities and research libraries.\\
 				\end{enumerate}
+				\vspace{\spaceof{1.5}}
 				By signing this form, I acknowledged that I have read and understand the
 				IIUM Intellectual Property Right and Commercialization policy.\\
-				\vspace*{\spaceof{4}}
+				\vspace*{\spaceof{3}}
 				Affirmed by \@author
 
 			\end{flushleft}
@@ -672,7 +764,6 @@
 			\end{center}
 		\end{center}
 	\end{Framed}
-
 	\clearpage
 }
 
@@ -685,7 +776,24 @@
 \newcommand{\makereferences}[1]{
     \label{pg:ReferencesPage}
 	\addcontentsline{toc}{chapter}{References}
-	\clearpage
 	\bibliographystyle{apacite}
     \bibliography{#1}
+    \clearpage
+}
+
+
+
+
+\newenvironment{Publications}
+{
+	\addcontentsline{toc}{chapter}{List of Publications}
+	\chapter*{\uppercase{List of Publications}}
+	\begin{justify}
+		\normalsize
+		\noindent
+		\setstretch{1}
+		}
+		{
+	\end{justify}
+	\clearpage
 }
